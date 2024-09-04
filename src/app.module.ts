@@ -7,6 +7,12 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import supabaseConfig from './config/env/supabase.config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './users/user.entity';
+import { Post } from './post/post.entity';
+import { Like } from './like/like.entity';
+import { Follow } from './follow/follow.entity';
+import { PostModule } from './post/post.module';
+import { LikeModule } from './like/like.module';
+import { FollowModule } from './follow/follow.module';
 
 @Module({
   imports: [
@@ -26,10 +32,13 @@ import { User } from './users/user.entity';
         username: configService.get<string>('supabase.username'),
         password: configService.get<string>('supabase.password'),
         database: configService.get<string>('supabase.supabase'),
-        entities: [User],
+        entities: [User, Post, Like, Follow],
         synchronize: true,
       }),
     }),
+    PostModule,
+    LikeModule,
+    FollowModule,
   ],
   controllers: [AppController],
   providers: [AppService],

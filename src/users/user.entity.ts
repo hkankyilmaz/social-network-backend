@@ -1,29 +1,38 @@
-import { Entity, Column, PrimaryGeneratedColumn, Table } from 'typeorm';
+import { Like } from 'src/like/like.entity';
+import { Post } from 'src/post/post.entity';
+import { Follow } from 'src/follow/follow.entity';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  Table,
+  OneToMany,
+} from 'typeorm';
 
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn('increment', { type: 'bigint' })
   userId: number;
 
-  @Column()
+  @Column('text')
   firstName: string;
 
-  @Column()
+  @Column('text')
   lastName: string;
 
-  @Column()
+  @Column('text')
   username: string;
 
-  @Column()
+  @Column('text')
   email: string;
 
-  @Column()
+  @Column('text')
   password: string;
 
   @Column()
   role: string;
 
-  @Column()
+  @Column('text')
   Address: string;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
@@ -31,4 +40,16 @@ export class User {
 
   @Column({ default: true })
   isActive: boolean;
+
+  @OneToMany(() => Like, (like) => like.user)
+  likes: Like[];
+
+  @OneToMany(() => Post, (post) => post.user)
+  posts: Post[];
+
+  @OneToMany(() => Follow, (follow) => follow.follower)
+  following: Follow[];
+
+  @OneToMany(() => Follow, (follow) => follow.following)
+  followers: Follow[];
 }
